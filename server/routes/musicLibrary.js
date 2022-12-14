@@ -20,9 +20,10 @@ router.post('/', (req, res) => {
     const newSong = req.body;
     const queryText = `
         INSERT INTO "songs" ("rank", "artist", "track", "published")
-        VALUES ('${newSong.rank}', '${newSong.artist}', '${newSong.track}', '${newSong.published}')
+        VALUES ($1, $2, $3, $4);
     `;  
-    pool.query(queryText) //doing the query
+
+    pool.query(queryText, [newSong.rank, newSong.artist, newSong.track, newSong.published]) //doing the query. 
     .then((result) => {
         console.log('result', result);
         res.sendStatus(201);
