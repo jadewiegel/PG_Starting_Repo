@@ -1,3 +1,5 @@
+//route connecting to front end
+
 const express = require('express');
 const router = express.Router();
 

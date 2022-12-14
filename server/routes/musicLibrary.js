@@ -1,3 +1,5 @@
+//route connecting to database
+
 const express = require('express');
 const router = express.Router();
 const pool = require('../modules/pool');
@@ -12,8 +14,35 @@ router.get('/', (req, res) => {
     .catch((error) => {
         console.log('error making a query', error);
         res.sendStatus(500);
-    })
+    });
+});
 
+router.get('/:id', (req, res) =>{
+    console.log('hello from get request!', req.params.id);
+    const queryText = `SELECT * FROM songs WHERE id = ${req.params.id};`;
+    pool.query(queryText) //doing the query
+    .then((result) => { 
+        console.log('results from DB', result);
+        res.send(result.rows); //.rows makes result easier to read. 
+    })
+    .catch((error) => {
+        console.log('error making a query', error);
+        res.sendStatus(500);
+    });
+});
+
+router.delete('/:id', (req, res) =>{
+    console.log('hello from delete request!', req.params.id);
+    const queryText = `DELETE FROM songs WHERE id = ${req.params.id};`;
+    pool.query(queryText) //doing the query
+    .then((result) => { 
+        console.log(result);
+        res.sendStatus(204); 
+    })
+    .catch((error) => {
+        console.log('error making a query', error);
+        res.sendStatus(500);
+    });
 });
 
 router.post('/', (req, res) => {
