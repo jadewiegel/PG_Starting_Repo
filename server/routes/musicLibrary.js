@@ -63,4 +63,28 @@ router.post('/', (req, res) => {
     });
 });
 
+router.put('/rank/:id', (req, res) => {
+    const direction = req.body.direction;
+    let queryText = '';
+    if(direction == 'up') {
+        //increase rank
+       queryText = `UPDATE "songs" SET "rank"=rank + 1 WHERE "id"=${req.params.id};`;
+    } else if (direction == 'down') {
+        //decrease rank
+        queryText = `UPDATE "songs" SET "rank"=rank - 1 WHERE "id"=${req.params.id};`;
+    } else {
+        res.sendStatus(500);
+        return;
+    }
+    pool.query(queryText)
+    .then((dbResponse) => {
+        console.log('dbResponse', dbResponse);
+        res.sendStatus(200);
+    })
+    .catch((error) => {
+        console.log(error);
+        res.sendStatus(500);
+    })
+})
+
 module.exports = router;
