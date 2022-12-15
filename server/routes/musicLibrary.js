@@ -5,7 +5,7 @@ const router = express.Router();
 const pool = require('../modules/pool');
 
 router.get('/', (req, res) => {
-    let queryText = 'SELECT * from "songs";';
+    let queryText = 'SELECT * from "songs" ORDER BY id asc;';
     pool.query(queryText) //doing the query
     .then((result) => { 
         console.log('results from DB', result);
